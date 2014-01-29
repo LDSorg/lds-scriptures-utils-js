@@ -1,0 +1,29 @@
+{
+  "name": "lds-scriptures-utils",
+  "version": "0.1.0",
+  "description": "Download scriptures from LDS.org and count word occurances",
+  "main": "get-scriptures",
+  "scripts": {
+    "test": "node get-scriptures"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/coolaj86/lds-scriptures-utils-js.git"
+  },
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "jsdom": "~0.8.11",
+    "request": "~2.33.0"
+  },
+  "keywords": [
+    "lds",
+    "scriptures",
+    "mormon"
+  ],
+  "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.com/)",
+  "license": "Apache2",
+  "bugs": {
+    "url": "https://github.com/coolaj86/lds-scriptures-utils-js/issues"
+  },
+  "homepage": "https://github.com/coolaj86/lds-scriptures-utils-js"
+}
