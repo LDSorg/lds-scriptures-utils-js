@@ -21,7 +21,7 @@
 
     function readChapter(next, book, chapter) {
       var resource = "http://lds.org/scriptures/" + scripture + "/" + book + "/" + chapter + "?lang=" + language
-        , htmlpath = scripture + '.' + book + '.' + chapter + '-' + language + '.html'
+        , htmlpath = './data/' + scripture + '.' + book + '.' + chapter + '-' + language + '.html'
         ;
 
       function processHtml(data) {
@@ -52,14 +52,17 @@
             }
           });
 
-          console.log('meta', Object.keys(dictionary).length, book, chapter, chwords.length);
+          //console.log('meta', Object.keys(dictionary).length, book, chapter, chwords.length);
           readChapter(next, book, chapter + 1);
         });
       }
 
       if (fs.existsSync(htmlpath)) {
+        console.log('Found ' + htmlpath);
         processHtml(fs.readFileSync(htmlpath, 'utf8'));
       } else {
+        console.log(htmlpath);
+        console.log('Downloading ' + resource + '...');
         request(resource, function (err, client, data) {
           if (client.statusCode >= 300) {
             return next();
@@ -74,38 +77,36 @@
 
     console.log('resource', resource);
     request.get(resource, function (err, thing, data) {
+      //console.log('requested', data);
       jsdom.env(data.toString(), function (errors, window) {
-        console.log('requested', data);
         var $ = jqueryCreate(window)
-          , bookElements = $("div#primary div.table-of-contents ul.books li")
+          , $bookElements = $("div#primary div.table-of-contents ul.books li")
           , books = []
           ;
 
         try {
-          Object.keys(bookElements).forEach(function (i) {
-            var book = bookElements[i];
-            books.push($(book).attr('id'));
+          $bookElements.each(function (i, el) {
+            var $book = $(el)
+              ;
+
+            books.push($book.attr('id'));
           });
         } catch (e) {
           // console.log(e);
         }
 
-        console.log("downloading...");
+        console.log("downloading...", books);
         forAllAsync(books, function (next, book) {
           readChapter(next, book, 1);
-        }, 20).then(function () {
+        }, 10).then(function () {
           var dictpath = './dictionary.' + scripture  + '.' + language + '.json'
             , chaptpath = './chapters.' + scripture + '.' + language + '.json'
             ;
 
           console.log('dictionary', dictionary);
           console.log('chapters', chapters);
-          if (!fs.existsSync(dictpath)) {
-            fs.writeFileSync(dictpath, JSON.stringify(dictionary));
-          }
-          if (!fs.existsSync(chaptpath)) {
-            fs.writeFileSync(chaptpath, JSON.stringify(chapters));
-          }
+          fs.writeFileSync(dictpath, JSON.stringify(dictionary));
+          fs.writeFileSync(chaptpath, JSON.stringify(chapters));
         });
 
       });
