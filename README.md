@@ -3,11 +3,23 @@ About
 
 I wanted to find out what the most popular words are in the [Book of Mormon](http://lds.org/scriptures/bofm) in Spanish and then create flashcards for them.
 
+Installation
+===
+
+```bash
+git clone https://github.com/coolaj86/lds-scriptures-utils-js
+pushd lds-scriptures-utils-js
+npm install
+```
+
 Usage
 ====
 
-  0. edit `config.js` to suite your needs
-  0. `node get-scriptures.js`
+Edit `config.js` to suite your needs and then run
+
+```bash
+node get-scriptures
+```
 
 TODO
 ====
