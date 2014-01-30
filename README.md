@@ -24,6 +24,5 @@ node get-scriptures
 TODO
 ====
 
-  * Download and save to disk first
-  * Don't redownload if saved to disk
+  * Don't download the n+1 chapter if the next chapter is in a different book
   * Create JSON representation of footnotes rather than removing them
